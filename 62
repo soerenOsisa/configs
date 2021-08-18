@@ -15,6 +15,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 cp /configs/grub /etc/default/grub
 cp /configs/boot.png /usr/local/boot.png
+update-grub
 #USER
 echo -e "six\nsix" | passwd
 useradd -m -g wheel s
