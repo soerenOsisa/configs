@@ -37,7 +37,7 @@ mount $drive"2" /mnt
 mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
-basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
+basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 artix-chroot /mnt | sh configs/62
@@ -48,23 +48,9 @@ s62='''
 #!/bin/bash
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
-#ZSH
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/powerline/powerline.git
-cd powerline
-./install.sh
-cd ..
-rm -rf powerline
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
-cat /configs/zshrc >> ~/.zshrc
+cp /configs/.bashrc ~/.bashrc
 cp /configs/aur /usr/local/bin/aur
-#FONTS
-git clone https://github.com/powerline/fonts.git --depth=1
-cd fonts
-./install.sh
-cd ..
-rm -rf fonts
-chsh -s /usr/bin/zsh
+
 #WINDOW
 pacman --noconfirm -S xorg-xinit xorg-server terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
@@ -74,8 +60,8 @@ git clone https://github.com/soerenOsisa/st /st
 cd /dwm && make clean install && cd ..
 cd /dmenu && make clean install && cd ..
 cd /st && make clean install && cd ..
+cp /configs/.xinitrc ~/.xinitrc
 #BOOT
-pacman --noconfirm -S grub os-prober efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 cp /configs/grub /etc/default/grub
