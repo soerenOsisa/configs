@@ -4,12 +4,14 @@ git clone https://github.com/soerenOsisa/configs /configs
 cp /configs/.bashrc ~/.bashrc
 cp /configs/aur /usr/local/bin/aur
 echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
+useradd paur
+echo "paur ALL=(ALL) NOPASSWD: /usr/bin/makepkg" >> /etc/sudoers
 #DESKTOP
 pacman --noconfirm -S xorg nvidia nvidia-utils plasma-desktop ssdm-s6 yakuake plasma-nm plasma-pa
 nvidia-modprobe
-yay -S librewolf
+/usr/local/bin/aur librewolf
+/usr/local/bin/aur mailspring
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default sddm
-yay -S mailspring
 #BOOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg

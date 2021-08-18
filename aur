@@ -2,5 +2,6 @@
 rm -r /tmp/$1
 git clone https://aur.archlinux.org/$1.git /tmp/$1
 cd /tmp
-pacman -U /tmp/$1/$1*.tar.zst
+chown paur .
+su paur | makepkg -si
 rm -r /tmp/$1

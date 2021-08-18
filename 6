@@ -11,7 +11,7 @@ mount $drive"2" /mnt
 mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
-basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen yay linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
+basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cat configs/62 | artix-chroot /mnt /bin/bash
