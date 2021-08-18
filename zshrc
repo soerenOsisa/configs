@@ -1,4 +1,4 @@
-alias s-e='s6-rc-bundle-update add default'
+alias s-e='s6-rc-bundle-update -c /etc/s6/rc/compiled add default'
 alias s-u='s6-rc -u change'
 alias s-d='s6-rc -d change'
 alias pac='pacman --noconfirm -S'
