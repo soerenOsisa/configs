@@ -1,3 +1,4 @@
+#pacman --noconfirm -Sy git && git clone https://github.com/soerenOsisa/configs && sh configs/6
 inp = input("Options: ").split(",")
 args = [x.split(" ") for x in inp]
 keys = [q[0] for q in args]
@@ -51,7 +52,6 @@ sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
 git clone https://github.com/soerenOsisa/configs
 cat configs/zshrc >> ~/.zshrc
 cp configs/aur /usr/local/bin/
-sh configs/zshrc
 #FONTS
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
@@ -62,9 +62,9 @@ chsh -s /usr/bin/zsh
 #WINDOW
 pacman --noconfirm -S xorg-xinit xorg-server libx11 libxft terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
-gitc soerenOsisa/dwm
-gitc soerenOsisa/dmenu
-gitc soerenOsisa/st
+git clone https://github.com/soerenOsisa/dwm
+git clone https://github.com/soerenOsisa/dmenu
+git clone https://github.com/soerenOsisa/st
 cd dwm && make clean install && cd ..
 cd dmenu && make clean install && cd ..
 cd st && make clean install && cd ..
@@ -89,9 +89,8 @@ kbd_mode -u
 #PACKAGES
 {}
 #FINISH
-s6-rc-bundle-update add default elogind iwd dhcpcd
+#s6-rc-bundle-update add default iwd dhcpcd
 exit
-EOT
 umount -R /mnt
 reboot
 '''.format(passwd,passwd,user,passwd,passwd,user,hostname,timez,install)

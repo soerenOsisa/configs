@@ -7,5 +7,4 @@ alias gitc='git clone https://github.com/'
 s6-rc -u change elogind
 s6-rc -u change iwd
 s6-rc -u change dhcpcd
-
 startx
