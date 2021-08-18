@@ -41,7 +41,7 @@ basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cp boot.png /mnt/usr/local/
-artix-chroot /mnt /bin/bash | sh configs/62
+artix-chroot /mnt /bin/bash | sh configs/62 && umount -R /mnt && reboot
 '''.format(drive,boot)
 s62='''
 #!/bin/bash
@@ -91,8 +91,6 @@ kbd_mode -u
 #FINISH
 #s6-rc-bundle-update add default iwd dhcpcd
 exit
-umount -R /mnt
-reboot
 '''.format(passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
 
 s6_file = open("6", "w", newline='')

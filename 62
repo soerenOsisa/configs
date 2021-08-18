@@ -45,5 +45,3 @@ pacman --noconfirm -S neofetch htop
 #FINISH
 #s6-rc-bundle-update add default iwd dhcpcd
 exit
-umount -R /mnt
-reboot

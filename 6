@@ -15,4 +15,4 @@ basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cp boot.png /mnt/usr/local/
-artix-chroot /mnt /bin/bash | sh configs/62
+artix-chroot /mnt /bin/bash | sh configs/62 && umount -R /mnt && reboot
