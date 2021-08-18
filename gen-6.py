@@ -37,7 +37,7 @@ mount $drive"2" /mnt
 mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
-basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
+basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 artix-chroot /mnt | sh configs/62
@@ -46,7 +46,6 @@ reboot
 '''.format(drive,boot)
 s62='''
 #!/bin/bash
-pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
 #ZSH
