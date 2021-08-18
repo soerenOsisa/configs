@@ -79,8 +79,8 @@ cd /st && make clean install && cd ..
 pacman --noconfirm -S grub os-prober efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-cp configs/grub /etc/default/grub
-cp configs/boot.png /usr/local/boot.png
+cp /configs/grub /etc/default/grub
+cp /configs/boot.png /usr/local/boot.png
 #USER
 echo -e "{}\\n{}" | passwd
 useradd -m -g wheel {}
