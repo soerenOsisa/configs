@@ -48,6 +48,7 @@ s62='''
 #!/bin/bash
 pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
+git clone https://github.com/soerenOsisa/configs /
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/powerline/powerline.git
@@ -69,12 +70,12 @@ chsh -s /usr/bin/zsh
 #WINDOW
 pacman --noconfirm -S xorg-xinit xorg-server libxft terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
-git clone https://github.com/soerenOsisa/dwm
-git clone https://github.com/soerenOsisa/dmenu
-git clone https://github.com/soerenOsisa/st
-cd dwm && make clean install && cd ..
-cd dmenu && make clean install && cd ..
-cd st && make clean install && cd ..
+git clone https://github.com/soerenOsisa/dwm /
+git clone https://github.com/soerenOsisa/dmenu /
+git clone https://github.com/soerenOsisa/st /
+cd /dwm && make clean install && cd ..
+cd /dmenu && make clean install && cd ..
+cd /st && make clean install && cd ..
 #BOOT
 pacman -S grub os-prober efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
