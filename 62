@@ -20,7 +20,7 @@ cd ..
 rm -rf fonts
 chsh -s /usr/bin/zsh
 #WINDOW
-pacman --noconfirm -S xorg-xinit xorg-server libxft terminus-font nvidia nvidia-utils xorg-xsetroot
+pacman --noconfirm -S xorg-xinit xorg-server terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
 git clone https://github.com/soerenOsisa/dwm /dwm
 git clone https://github.com/soerenOsisa/dmenu /dmenu
@@ -29,7 +29,7 @@ cd /dwm && make clean install && cd ..
 cd /dmenu && make clean install && cd ..
 cd /st && make clean install && cd ..
 #BOOT
-pacman -S grub os-prober efibootmgr
+pacman --noconfirm -S grub os-prober efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 cp configs/grub /etc/default/grub
