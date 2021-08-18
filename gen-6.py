@@ -48,7 +48,7 @@ s62='''
 #!/bin/bash
 pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
-git clone https://github.com/soerenOsisa/configs /
+git clone https://github.com/soerenOsisa/configs /configs
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/powerline/powerline.git
@@ -57,9 +57,8 @@ cd powerline
 cd ..
 rm -rf powerline
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
-git clone https://github.com/soerenOsisa/configs
-cat configs/zshrc >> ~/.zshrc
-cp configs/aur /usr/local/bin/aur
+cat /configs/zshrc >> ~/.zshrc
+cp /configs/aur /usr/local/bin/aur
 #FONTS
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
@@ -70,9 +69,9 @@ chsh -s /usr/bin/zsh
 #WINDOW
 pacman --noconfirm -S xorg-xinit xorg-server libxft terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
-git clone https://github.com/soerenOsisa/dwm /
-git clone https://github.com/soerenOsisa/dmenu /
-git clone https://github.com/soerenOsisa/st /
+git clone https://github.com/soerenOsisa/dwm /dwm
+git clone https://github.com/soerenOsisa/dmenu /dmenu
+git clone https://github.com/soerenOsisa/st /st
 cd /dwm && make clean install && cd ..
 cd /dmenu && make clean install && cd ..
 cd /st && make clean install && cd ..
@@ -99,6 +98,7 @@ kbd_mode -u
 {}
 #FINISH
 #s6-rc-bundle-update add default iwd dhcpcd
+rm -r /configs
 exit
 '''.format(passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
 
