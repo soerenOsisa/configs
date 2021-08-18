@@ -48,7 +48,7 @@ pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 con
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
-gitc soerenOsisa/configs
+git clone https://github.com/soerenOsisa/configs
 cat configs/zshrc >> ~/.zshrc
 cp configs/aur /usr/local/bin/
 sh configs/zshrc
