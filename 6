@@ -1,0 +1,18 @@
+#!/bin/bash
+drive="/dev/"$(lsblk -S | awk {'print $1'} | sed -n '2 p')
+#DRIVE
+sfdisk $drive -f -w auto -X dos << EOF
+,524288,L,*
+;
+EOF
+mkfs.fat -F32 $drive"1"
+mkfs.ext4 $drive"2"
+mount $drive"2" /mnt
+mkdir /mnt/boot
+mount $drive"1" /mnt/boot
+#BASE
+basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstabS
+modprobe efivarfs
+cp boot.png /mnt/usr/local/
+artix-chroot /mnt /bin/bash << "sh configs/62"

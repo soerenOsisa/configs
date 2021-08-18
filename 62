@@ -1,0 +1,51 @@
+#!/bin/bash
+pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh powerline powerline-fonts
+#ZSH
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sed -i 's/ZSH_THEME="robbyrussell"//ZSH_THEME="agnoster"/g' ~/.zshrc
+gitc soerenOsisa/configs
+cat configs/zshrc >> ~/.zshrc
+cp configs/aur /usr/local/bin/
+sh configs/zshrc
+#FONTS
+git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+cd ..
+rm -rf fonts
+chsh -s /usr/bin/zsh
+#WINDOW
+pacman --noconfirm -S xorg-xinit xorg-server libx11 libxft terminus-font nvidia nvidia-utils xorg-xsetroot
+nvidia-modprobe
+gitc soerenOsisa/dwm
+gitc soerenOsisa/dmenu
+gitc soerenOsisa/st
+cd dwm && make clean install && cd ..
+cd dmenu && make clean install && cd ..
+cd st && make clean install && cd ..
+#BOOT
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+cp configs/grub /etc/default/
+cp configs/boot.png /usr/local/
+#USER
+echo -e "licht\nlicht" | passwd
+useradd -m -g wheel six
+echo -e "CET\ns" | passwd licht
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+#KBD&SYNC
+sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
+locale-gen
+echo 'LANG="en-US.UTF-8"' > /etc/locale.conf
+echo "licht" > /etc/hostname
+ln -sf /usr/share/zoneinfo/posix/s /etc/localtime
+hwclock --systohc
+kbd_mode -u
+#PACKAGES
+s
+#FINISH
+s6-rc-bundle-update add default elogind iwd dhcpcd
+exit
+EOT
+umount -R /mnt
+reboot
