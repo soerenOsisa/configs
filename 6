@@ -14,6 +14,6 @@ mount $drive"1" /mnt/boot
 basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
-artix-chroot /mnt << cat configs/62
+cat configs/62 | artix-chroot /mnt /bin/bash
 umount -R /mnt
 reboot
