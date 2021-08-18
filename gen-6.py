@@ -37,7 +37,7 @@ mount $drive"2" /mnt
 mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
-basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh
+basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen yay linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cat configs/62 | artix-chroot /mnt /bin/bash
@@ -50,17 +50,13 @@ s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
 cp /configs/.bashrc ~/.bashrc
 cp /configs/aur /usr/local/bin/aur
-
-#WINDOW
-pacman --noconfirm -S xorg-xinit xorg-server terminus-font nvidia nvidia-utils xorg-xsetroot
+echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
+#DESKTOP
+pacman --noconfirm -S xorg nvidia nvidia-utils plasma-desktop ssdm-s6 yakuake plasma-nm plasma-pa
 nvidia-modprobe
-git clone https://github.com/soerenOsisa/dwm /dwm
-git clone https://github.com/soerenOsisa/dmenu /dmenu
-git clone https://github.com/soerenOsisa/st /st
-cd /dwm && make clean install && cd ..
-cd /dmenu && make clean install && cd ..
-cd /st && make clean install && cd ..
-cp /configs/.xinitrc ~/.xinitrc
+yay -S librewolf
+s6-rc-bundle-update -c /etc/s6/rc/compiled add default sddm
+yay -S mailspring
 #BOOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg

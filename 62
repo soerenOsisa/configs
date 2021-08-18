@@ -3,17 +3,13 @@ s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
 cp /configs/.bashrc ~/.bashrc
 cp /configs/aur /usr/local/bin/aur
-
-#WINDOW
-pacman --noconfirm -S xorg-xinit xorg-server terminus-font nvidia nvidia-utils xorg-xsetroot
+echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
+#DESKTOP
+pacman --noconfirm -S xorg nvidia nvidia-utils plasma-desktop ssdm-s6 yakuake plasma-nm plasma-pa
 nvidia-modprobe
-git clone https://github.com/soerenOsisa/dwm /dwm
-git clone https://github.com/soerenOsisa/dmenu /dmenu
-git clone https://github.com/soerenOsisa/st /st
-cd /dwm && make clean install && cd ..
-cd /dmenu && make clean install && cd ..
-cd /st && make clean install && cd ..
-cp /configs/.xinitrc ~/.xinitrc
+yay -S librewolf
+s6-rc-bundle-update -c /etc/s6/rc/compiled add default sddm
+yay -S mailspring
 #BOOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -33,7 +29,7 @@ ln -sf /usr/share/zoneinfo/posix/CET /etc/localtime
 hwclock --systohc
 kbd_mode -u
 #PACKAGES
-pacman --noconfirm -S htop
+
 #FINISH
 #s6-rc-bundle-update add default iwd dhcpcd
 rm -r /configs

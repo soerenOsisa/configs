@@ -1,7 +1,7 @@
 # GRUB boot loader configuration
 
 GRUB_DEFAULT=0
-GRUB_TIMEOUT=0
+GRUB_TIMEOUT=1
 GRUB_DISTRIBUTOR="Artix"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
 GRUB_CMDLINE_LINUX=""
@@ -54,4 +54,4 @@ GRUB_BACKGROUND="/usr/local/boot.png"
 #GRUB_SAVEDEFAULT=true
 
 # Uncomment to disable submenus in boot menu
-GRUB_DISABLE_SUBMENU=y
+#GRUB_DISABLE_SUBMENU=y
