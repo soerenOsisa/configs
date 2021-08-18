@@ -37,17 +37,17 @@ mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
 basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
-genfstab -U /mnt >> /mnt/etc/fstabS
+fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cp boot.png /mnt/usr/local/
-artix-chroot /mnt /bin/bash << "sh configs/62"
+artix-chroot /mnt /bin/bash | sh configs/62
 '''.format(drive,boot)
 s62='''
 #!/bin/bash
 pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh powerline powerline-fonts
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-sed -i 's/ZSH_THEME="robbyrussell"//ZSH_THEME="agnoster"/g' ~/.zshrc
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
 gitc soerenOsisa/configs
 cat configs/zshrc >> ~/.zshrc
 cp configs/aur /usr/local/bin/
@@ -94,7 +94,7 @@ exit
 EOT
 umount -R /mnt
 reboot
-'''.format(passwd,passwd,hostname,timez,user,passwd,passwd,user,user,install)
+'''.format(passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
 
 s6_file = open("6", "w", newline='')
 s6_file.write(s6[1:-1])

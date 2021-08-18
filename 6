@@ -12,7 +12,7 @@ mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
 basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
-genfstab -U /mnt >> /mnt/etc/fstabS
+fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cp boot.png /mnt/usr/local/
-artix-chroot /mnt /bin/bash << "sh configs/62"
+artix-chroot /mnt /bin/bash | sh configs/62

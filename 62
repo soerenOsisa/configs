@@ -2,7 +2,7 @@
 pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh powerline powerline-fonts
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-sed -i 's/ZSH_THEME="robbyrussell"//ZSH_THEME="agnoster"/g' ~/.zshrc
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
 gitc soerenOsisa/configs
 cat configs/zshrc >> ~/.zshrc
 cp configs/aur /usr/local/bin/
@@ -29,20 +29,20 @@ grub-mkconfig -o /boot/grub/grub.cfg
 cp configs/grub /etc/default/
 cp configs/boot.png /usr/local/
 #USER
-echo -e "licht\nlicht" | passwd
-useradd -m -g wheel six
-echo -e "CET\ns" | passwd licht
+echo -e "six\nsix" | passwd
+useradd -m -g wheel s
+echo -e "six\nsix" | passwd s
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 #KBD&SYNC
 sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
 locale-gen
 echo 'LANG="en-US.UTF-8"' > /etc/locale.conf
-echo "licht" > /etc/hostname
-ln -sf /usr/share/zoneinfo/posix/s /etc/localtime
+echo "six" > /etc/hostname
+ln -sf /usr/share/zoneinfo/posix/CET /etc/localtime
 hwclock --systohc
 kbd_mode -u
 #PACKAGES
-s
+pacman --noconfirm -S neofetch htop
 #FINISH
 s6-rc-bundle-update add default elogind iwd dhcpcd
 exit
