@@ -14,4 +14,6 @@ mount $drive"1" /mnt/boot
 basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
-$(artix-chroot /mnt | sh configs/62) && umount -R /mnt && reboot
+artix-chroot /mnt | sh configs/62
+umount -R /mnt
+reboot

@@ -40,18 +40,25 @@ mount $drive"1" /mnt/boot
 basestrap /mnt base base-devel s6-base elogind-s6 linux-zen linux-firmware
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
-$(artix-chroot /mnt | sh configs/62) && umount -R /mnt && reboot
+artix-chroot /mnt | sh configs/62
+umount -R /mnt
+reboot
 '''.format(drive,boot)
 s62='''
 #!/bin/bash
-pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh powerline powerline-fonts
+pacman --noconfirm -S dhcpcd-s6 iwd-s6 openresolv grub efibootmgr connman-s6 connman-gtk vim git curl openssh zsh
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 #ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/powerline/powerline.git
+cd powerline
+./install.sh
+cd ..
+rm -rf powerline
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
 git clone https://github.com/soerenOsisa/configs
 cat configs/zshrc >> ~/.zshrc
-cp configs/aur /usr/local/bin/
+cp configs/aur /usr/local/bin/aur
 #FONTS
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
@@ -60,7 +67,7 @@ cd ..
 rm -rf fonts
 chsh -s /usr/bin/zsh
 #WINDOW
-pacman --noconfirm -S xorg-xinit xorg-server libx11 libxft terminus-font nvidia nvidia-utils xorg-xsetroot
+pacman --noconfirm -S xorg-xinit xorg-server libxft terminus-font nvidia nvidia-utils xorg-xsetroot
 nvidia-modprobe
 git clone https://github.com/soerenOsisa/dwm
 git clone https://github.com/soerenOsisa/dmenu
@@ -69,11 +76,11 @@ cd dwm && make clean install && cd ..
 cd dmenu && make clean install && cd ..
 cd st && make clean install && cd ..
 #BOOT
-cp configs/boot.png /usr/local/
+pacman -S grub os-prober efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-cp configs/grub /etc/default/
-cp configs/boot.png /usr/local/
+cp configs/grub /etc/default/grub
+cp configs/boot.png /usr/local/boot.png
 #USER
 echo -e "{}\\n{}" | passwd
 useradd -m -g wheel {}
