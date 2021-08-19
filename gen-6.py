@@ -23,7 +23,7 @@ try:
 	install = "pacman --noconfirm -S " + ' '.join(packages);
 except: install = "";
 
-s6 = '''
+s6base = '''
 #!/bin/bash
 drive="/dev/{}
 #DRIVE
@@ -40,11 +40,11 @@ mount $drive"1" /mnt/boot
 basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
-cat configs/62 | artix-chroot /mnt /bin/bash
+cat configs/s6configs | artix-chroot /mnt /bin/bash
 umount -R /mnt
 reboot
 '''.format(drive,boot)
-s62='''
+s6configs='''
 #!/bin/bash
 s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
@@ -53,8 +53,14 @@ cp /configs/aur /usr/local/bin/aur
 echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
 useradd paur
 echo "paur ALL=(ALL) NOPASSWD: /usr/bin/makepkg" >> /etc/sudoers
-#DESKTOP
+sh /configs/s6desktop
+'''
+s6desktop='''
+#!/bin/bash
 pacman --noconfirm -S xorg nvidia nvidia-utils
+#pacman --noconfirm -S xorg xf86-video-amdgpu amdgpu-pro-libgl
+#pacman --noconfirm -S xorg xf86-video-intel mesa
+#pacman --noconfirm -S xorg xf86-video-fbdev xf86-video-vesa
 nvidia-modprobe
 /usr/local/bin/aur librewolf
 /usr/local/bin/aur mailspring
@@ -71,18 +77,27 @@ cat /configs/.bashrc >> ~/.zprofile
 echo "startx" >> ~/.zprofile
 echo "exec xmonad" >> ~/.xinitrc
 sed -i "s/9/12/g" ~/.config/alacritty.yml
-#BOOT
+sh /configs/s6boot
+'''.format(user)
+s6boot='''
+#!/bin/bash
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 cp /configs/grub /etc/default/grub
 cp /configs/boot.png /usr/local/boot.png
 update-grub
-#USER
+sh /configs/s6user
+'''
+s6user='''
+#!/bin/bash
 echo -e "{}\\n{}" | passwd
 useradd -m -g wheel {}
 echo -e "{}\\n{}" | passwd {}
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-#KBD&SYNC
+sh /configs/s6locale
+'''.format(passwd,passwd,user,passwd,passwd,user)
+s6locale='''
+#!/bin/bash
 sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
 locale-gen
 echo 'LANG="en-US.UTF-8"' > /etc/locale.conf
@@ -90,17 +105,25 @@ echo "{}" > /etc/hostname
 ln -sf /usr/share/zoneinfo/posix/{} /etc/localtime
 hwclock --systohc
 kbd_mode -u
-#PACKAGES
+sh /configs/s6finish
+'''.format(hostname,timez)
+s6finish='''
+#!/bin/bash
 {}
 #FINISH
 #s6-rc-bundle-update add default iwd dhcpcd
 rm -r /configs
 exit
-'''.format(user,passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
+'''.format(install)
 
-s6_file = open("6", "w", newline='')
-s6_file.write(s6[1:-1])
-s6_file.close()
-s62_file = open("62", "w", newline='')
-s62_file.write(s62[1:-1])
-s62_file.close()
+def s6script(name,var):
+	s6f = open(name, "w", newline='')
+	s6f.write(var[1:-1])
+	s6f.close()
+
+s6script('s6base',s6base)
+s6script('s6configs',s6configs)
+s6script('s6desktop',s6desktop)
+s6script('s6boot',s6boot)
+s6script('s6locale',s6locale)
+s6script('s6user',s6user)

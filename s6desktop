@@ -1,0 +1,22 @@
+#!/bin/bash
+pacman --noconfirm -S xorg nvidia nvidia-utils
+#pacman --noconfirm -S xorg xf86-video-amdgpu amdgpu-pro-libgl
+#pacman --noconfirm -S xorg xf86-video-intel mesa
+#pacman --noconfirm -S xorg xf86-video-fbdev xf86-video-vesa
+nvidia-modprobe
+/usr/local/bin/aur librewolf
+/usr/local/bin/aur mailspring
+git clone https://github.com/Axarva/dotfiles-2.0
+cd dotfiles-2.0
+chmod +x install-on-arch.sh
+echo -e "3\nyes\ny\ny\ny\n2\ny\nN\ny\n2\ny\n" | ./install-on-arch.sh
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
+echo 'export PATH="$PATH:/home/s/bin"' >> ~/.zshrc
+echo 'export PATH="$PATH:~/bin"' >> ~/.zshrc
+xmonad --recompile
+#sed -i "s/loginctl/s6-rc/g" ~/bin/powermenu.sh
+cat /configs/.bashrc >> ~/.zprofile
+echo "startx" >> ~/.zprofile
+echo "exec xmonad" >> ~/.xinitrc
+sed -i "s/9/12/g" ~/.config/alacritty.yml
+sh /configs/s6boot

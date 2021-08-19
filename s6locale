@@ -1,0 +1,9 @@
+#!/bin/bash
+sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
+locale-gen
+echo 'LANG="en-US.UTF-8"' > /etc/locale.conf
+echo "six" > /etc/hostname
+ln -sf /usr/share/zoneinfo/posix/CET /etc/localtime
+hwclock --systohc
+kbd_mode -u
+sh /configs/s6finish

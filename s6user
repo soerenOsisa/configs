@@ -1,0 +1,6 @@
+#!/bin/bash
+echo -e "six\nsix" | passwd
+useradd -m -g wheel s
+echo -e "six\nsix" | passwd s
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+sh /configs/s6locale

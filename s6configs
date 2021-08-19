@@ -1,0 +1,9 @@
+#!/bin/bash
+s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
+git clone https://github.com/soerenOsisa/configs /configs
+cp /configs/.bashrc ~/.bashrc
+cp /configs/aur /usr/local/bin/aur
+echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
+useradd paur
+echo "paur ALL=(ALL) NOPASSWD: /usr/bin/makepkg" >> /etc/sudoers
+sh /configs/s6desktop
