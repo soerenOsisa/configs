@@ -54,11 +54,23 @@ echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
 useradd paur
 echo "paur ALL=(ALL) NOPASSWD: /usr/bin/makepkg" >> /etc/sudoers
 #DESKTOP
-pacman --noconfirm -S xorg nvidia nvidia-utils plasma-desktop ssdm-s6 yakuake plasma-nm plasma-pa
+pacman --noconfirm -S xorg nvidia nvidia-utils
 nvidia-modprobe
 /usr/local/bin/aur librewolf
 /usr/local/bin/aur mailspring
-s6-rc-bundle-update -c /etc/s6/rc/compiled add default sddm
+git clone https://github.com/Axarva/dotfiles-2.0
+cd dotfiles-2.0
+chmod +x install-on-arch.sh
+echo -e "3\\nyes\\ny\\ny\\ny\\n2\\ny\\nN\\ny\\n2\\ny\\n" | ./install-on-arch.sh
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
+echo 'export PATH="$PATH:/home/{}/bin"' >> ~/.zshrc
+echo 'export PATH="$PATH:~/bin"' >> ~/.zshrc
+xmonad --recompile
+#sed -i "s/loginctl/s6-rc/g" ~/bin/powermenu.sh
+cat /configs/.bashrc >> ~/.zprofile
+echo "startx" >> ~/.zprofile
+echo "exec xmonad" >> ~/.xinitrc
+sed -i "s/9/12/g" ~/.config/alacritty.yml
 #BOOT
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -84,7 +96,7 @@ kbd_mode -u
 #s6-rc-bundle-update add default iwd dhcpcd
 rm -r /configs
 exit
-'''.format(passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
+'''.format(user,passwd,passwd,user,passwd,passwd,user,hostname,timez,install)
 
 s6_file = open("6", "w", newline='')
 s6_file.write(s6[1:-1])
