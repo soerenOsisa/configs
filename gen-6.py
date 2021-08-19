@@ -37,7 +37,7 @@ mount $drive"2" /mnt
 mkdir /mnt/boot
 mount $drive"1" /mnt/boot
 #BASE
-basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen linux-firmware dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
+basestrap /mnt base base-devel s6-base elogind elogind-s6 linux-zen linux-firmware wget dhcpcd-s6 iwd-s6 openresolv grub os-prober efibootmgr connman-s6 connman-gtk vim git openssh htop
 fstabgen -U /mnt >> /mnt/etc/fstab
 modprobe efivarfs
 cat configs/s6configs | artix-chroot /mnt /bin/bash
@@ -50,6 +50,7 @@ s6-rc-bundle-update -c /etc/s6/rc/compiled add default connmand
 git clone https://github.com/soerenOsisa/configs /configs
 cp /configs/.bashrc ~/.bashrc
 cp /configs/aur /usr/local/bin/aur
+chmod +x /usr/local/bin/aur
 echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
 useradd paur
 echo "paur ALL=(ALL) NOPASSWD: /usr/bin/makepkg" >> /etc/sudoers
@@ -67,7 +68,7 @@ nvidia-modprobe
 git clone https://github.com/Axarva/dotfiles-2.0
 cd dotfiles-2.0
 chmod +x install-on-arch.sh
-echo -e "3\\nyes\\ny\\ny\\ny\\n2\\ny\\nN\\ny\\n2\\ny\\n" | ./install-on-arch.sh
+./install-on-arch.sh
 sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
 echo 'export PATH="$PATH:/home/{}/bin"' >> ~/.zshrc
 echo 'export PATH="$PATH:~/bin"' >> ~/.zshrc
